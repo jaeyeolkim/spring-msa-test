@@ -14,4 +14,10 @@ public class CustomersController {
         log.info("API response customer = {}", customerId);
         return String.format("[Customer ID = %s, at %s]", customerId, System.currentTimeMillis());
     }
+
+    @GetMapping("/api/v1/customers/exception/{customerId}")
+    public String getCustomerExceptionCall(@PathVariable String customerId) {
+        log.info("API response customer = {}", customerId);
+        throw new RuntimeException("getCustomerExceptionCall 응답 오류 발생");
+    }
 }

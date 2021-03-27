@@ -14,7 +14,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class CatalogsController {
 
     private final CustomerApiService customerApiService;
-    private final WebClient webClient;
 
     @GetMapping("/catalogs/customers/{customerId}")
     public String getCustomer(@PathVariable String customerId) {
@@ -25,12 +24,11 @@ public class CatalogsController {
 
     @GetMapping("/api/v1/catalogs/customers/{customerId}")
     public String getApiCustomer(@PathVariable String customerId) {
-        String response = webClient.get()
-                .uri("http://localhost:8082/api/v1/customers/{customerId}", customerId)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        log.info(response);
-        return response;
+        return customerApiService.getCustomerApi(customerId);
+    }
+
+    @GetMapping("/api/v1/catalogs/customers/exception/{customerId}")
+    public String getApiCustomerException(@PathVariable String customerId) {
+        return customerApiService.getCustomerApiException(customerId);
     }
 }
