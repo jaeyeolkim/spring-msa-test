@@ -1,7 +1,6 @@
 package egovframework.msa.sample.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class CustomerApiServiceImpl implements CustomerApiService {
 
     private final WebClient webClient;
+
     private static final String CUSTOMER_URL = "http://localhost:8082/api/v1/customers";
 
     @Override
