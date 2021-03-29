@@ -4,6 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Slf4j
@@ -11,9 +12,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class CustomerApiServiceImpl implements CustomerApiService {
 
-    private final WebClient webClient;
+    private final WebClient.Builder webClient;
 
-    private static final String CUSTOMER_URL = "http://localhost:8082/api/v1/customers";
+//    private static final String CUSTOMER_URL = "http://localhost:8082/api/v1/customers";
+    private static final String CUSTOMER_RIBBON_URL = "http://customers-service/api/v1/customers";
 
     @Override
     public String getCustomer(String customerId) {
@@ -22,8 +24,8 @@ public class CustomerApiServiceImpl implements CustomerApiService {
 
     @Override
     public String getCustomerApi(String customerId) {
-        String response = webClient.get()
-                .uri(CUSTOMER_URL + "/{customerId}", customerId)
+        String response = webClient.build().get()
+                .uri(CUSTOMER_RIBBON_URL + "/{customerId}", customerId)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -34,8 +36,8 @@ public class CustomerApiServiceImpl implements CustomerApiService {
     @HystrixCommand(fallbackMethod = "getCustomerFallback")
     @Override
     public String getCustomerApiException(String customerId) {
-        String response = webClient.get()
-                .uri(CUSTOMER_URL + "/exception/{customerId}", customerId)
+        String response = webClient.build().get()
+                .uri(CUSTOMER_RIBBON_URL + "/exception/{customerId}", customerId)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

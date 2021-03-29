@@ -31,4 +31,9 @@ public class CatalogsController {
     public String getApiCustomerException(@PathVariable String customerId) {
         return customerApiService.getCustomerApiException(customerId);
     }
+
+    @GetMapping("/api/v1/ribbon/customers/{customerId}")
+    public String getApiCustomerRibbon(@PathVariable String customerId) {
+        return customerApiService.getCustomerApi(customerId);
+    }
 }
